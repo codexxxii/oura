@@ -1,3 +1,5 @@
+import Nav from "@/components/nav";
+import Sidebar from "@/components/sidebar";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -16,5 +18,13 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function RouteComponent() {
-  return <Outlet />;
+  return (
+    <div className="w-full min-h-screen flex">
+      <Sidebar />
+      <div>
+        <Nav />
+        <Outlet />
+      </div>
+    </div>
+  );
 }

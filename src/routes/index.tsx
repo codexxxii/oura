@@ -11,14 +11,16 @@ function Index() {
     <div>
       <header className="w-full h-15 flex justify-between items-center px-10">
         <div className="flex items-center gap-1">
-          <div className="w-7 h-7 rounded-full bg-linear-to-tr from-rose-200 via-indigo-400 to-sky-600" />
+          <div className="w-7 h-7 rounded-full bg-linear-to-tr from-rose-100 via-indigo-300 to-sky-600" />
           <p className="text-2xl font-semibold tracking-tighter">Oura</p>
         </div>
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-4 text-sm">
           <Show when={"signed-in"}>
             <Link to="/home">Home</Link>
             <SignOutButton>
-              <button>Sign Out</button>
+              <button className="border-rose-500 bg-rose-500 text-rose-50">
+                Sign Out
+              </button>
             </SignOutButton>
           </Show>
           <Show when={"signed-out"}>

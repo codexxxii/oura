@@ -1,63 +1,61 @@
-import { internalMutation, query, QueryCtx } from "./_generated/server";
-import { UserJSON } from "@clerk/backend";
-import { v, Validator } from "convex/values";
+import { v } from "convex/values";
+import { internalMutation, query } from "./_generated/server";
 
+// Create or update a user
+export const upsertFromClerk = internalMutation({
+  args: {
+    clerkId: v.string(),
+    email: v.string(),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    createdAt: v.number(),
+  },
+
+  handler: async (ctx, args) => {
+    const existingUser = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
+      .unique();
+
+    if (!existingUser) {
+      return await ctx.db.insert("users", args);
+    }
+  },
+});
+
+// Delete a user
+export const deleteFromClerk = internalMutation({
+  args: {
+    clerkId: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
+      .unique();
+
+    if (!user) return;
+
+    await ctx.db.delete(user._id);
+  },
+});
+
+// Get the currently authenticated user
 export const current = query({
   args: {},
+
   handler: async (ctx) => {
-    return await getCurrentUser(ctx);
-  },
-});
+    const identity = await ctx.auth.getUserIdentity();
 
-export const upsertFromClerk = internalMutation({
-  args: { data: v.any() as Validator<UserJSON> }, // no runtime validation, trust Clerk
-  async handler(ctx, { data }) {
-    const userAttributes = {
-      name: `${data.first_name} ${data.last_name}`,
-      externalId: data.id,
-    };
-
-    const user = await userByExternalId(ctx, data.id);
-    if (user === null) {
-      await ctx.db.insert("users", userAttributes);
-    } else {
-      await ctx.db.patch("users", user._id, userAttributes);
+    if (!identity) {
+      return null;
     }
+
+    return await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .unique();
   },
 });
-
-export const deleteFromClerk = internalMutation({
-  args: { clerkUserId: v.string() },
-  async handler(ctx, { clerkUserId }) {
-    const user = await userByExternalId(ctx, clerkUserId);
-
-    if (user !== null) {
-      await ctx.db.delete("users", user._id);
-    } else {
-      console.warn(
-        `Can't delete user, there is none for Clerk user ID: ${clerkUserId}`,
-      );
-    }
-  },
-});
-
-export async function getCurrentUserOrThrow(ctx: QueryCtx) {
-  const userRecord = await getCurrentUser(ctx);
-  if (!userRecord) throw new Error("Can't get current user");
-  return userRecord;
-}
-
-export async function getCurrentUser(ctx: QueryCtx) {
-  const identity = await ctx.auth.getUserIdentity();
-  if (identity === null) {
-    return null;
-  }
-  return await userByExternalId(ctx, identity.subject);
-}
-
-async function userByExternalId(ctx: QueryCtx, externalId: string) {
-  return await ctx.db
-    .query("users")
-    .withIndex("byExternalId", (q) => q.eq("externalId", externalId))
-    .unique();
-}

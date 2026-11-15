@@ -3,8 +3,11 @@ import { v } from "convex/values";
 
 export default defineSchema({
   users: defineTable({
-    name: v.string(),
-    // this the Clerk ID, stored in the subject JWT field
-    externalId: v.string(),
-  }).index("byExternalId", ["externalId"]),
+    clerkId: v.string(),
+    email: v.string(),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    createdAt: v.number(),
+  }).index("by_clerk_id", ["clerkId"]),
 });

@@ -1,3 +1,4 @@
+import PageHeader from "@/components/page-header";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/folders/$folderId/")({
@@ -5,5 +6,9 @@ export const Route = createFileRoute("/_authenticated/folders/$folderId/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/folders/$folderId/"!</div>;
+  return (
+    <div className="py-10">
+      <PageHeader title="Folder" />
+    </div>
+  );
 }

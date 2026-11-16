@@ -8,6 +8,13 @@ export default defineSchema({
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
-    createdAt: v.number(),
   }).index("by_clerk_id", ["clerkId"]),
+  folders: defineTable({
+    name: v.string(),
+    userId: v.string(),
+    parentId: v.optional(v.id("folders")),
+  })
+    .index("by_user", ["userId"])
+    .index("by_parent", ["parentId"])
+    .index("by_user_parent", ["userId", "parentId"]),
 });

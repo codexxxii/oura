@@ -46,7 +46,6 @@ http.route({
             firstName: user.first_name ?? undefined,
             lastName: user.last_name ?? undefined,
             imageUrl: user.image_url ?? undefined,
-            createdAt: user.created_at,
           });
 
           break;

@@ -25,10 +25,12 @@ function Index() {
           </Show>
           <Show when={"signed-out"}>
             <Link to="/sign-in">
-              <button>Sign In</button>
+              <button className="inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-lg border border-blue-500 px-4 text-sm font-medium text-blue-500 shadow-sm shadow-blue-500/20 transition-all duration-200 hover:shadow-md hover:shadow-blue-500/20">
+                Sign In
+              </button>
             </Link>
             <Link to="/sign-up">
-              <button className="items-center gap-2 border-blac bg-black text-white">
+              <button className="inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-500 px-4 text-sm font-medium text-white shadow-sm shadow-blue-500/20 transition-all duration-200 hover:bg-blue-600 hover:shadow-md hover:shadow-blue-500/20">
                 Get Started <ArrowRight size={12} />
               </button>
             </Link>

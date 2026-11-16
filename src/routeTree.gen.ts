@@ -16,6 +16,8 @@ import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
 import { Route as AuthenticatedFoldersIndexRouteImport } from './routes/_authenticated/folders/index'
 import { Route as AuthenticatedGalleryIndexRouteImport } from './routes/_authenticated/gallery/index'
 import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
+import { Route as AuthenticatedUploadIndexRouteImport } from './routes/_authenticated/upload/index'
+import { Route as AuthenticatedFoldersFolderIdIndexRouteImport } from './routes/_authenticated/folders/$folderId/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,6 +55,18 @@ const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
   path: '/home/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedUploadIndexRoute =
+  AuthenticatedUploadIndexRouteImport.update({
+    id: '/upload/',
+    path: '/upload/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedFoldersFolderIdIndexRoute =
+  AuthenticatedFoldersFolderIdIndexRouteImport.update({
+    id: '/folders/$folderId/',
+    path: '/folders/$folderId/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +75,8 @@ export interface FileRoutesByFullPath {
   '/folders/': typeof AuthenticatedFoldersIndexRoute
   '/gallery/': typeof AuthenticatedGalleryIndexRoute
   '/home/': typeof AuthenticatedHomeIndexRoute
+  '/upload/': typeof AuthenticatedUploadIndexRoute
+  '/folders/$folderId/': typeof AuthenticatedFoldersFolderIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,6 +85,8 @@ export interface FileRoutesByTo {
   '/folders': typeof AuthenticatedFoldersIndexRoute
   '/gallery': typeof AuthenticatedGalleryIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/upload': typeof AuthenticatedUploadIndexRoute
+  '/folders/$folderId': typeof AuthenticatedFoldersFolderIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,13 +97,30 @@ export interface FileRoutesById {
   '/_authenticated/folders/': typeof AuthenticatedFoldersIndexRoute
   '/_authenticated/gallery/': typeof AuthenticatedGalleryIndexRoute
   '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
+  '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
+  '/_authenticated/folders/$folderId/': typeof AuthenticatedFoldersFolderIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/sign-in/' | '/sign-up/' | '/folders/' | '/gallery/' | '/home/'
+    | '/'
+    | '/sign-in/'
+    | '/sign-up/'
+    | '/folders/'
+    | '/gallery/'
+    | '/home/'
+    | '/upload/'
+    | '/folders/$folderId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/folders' | '/gallery' | '/home'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/folders'
+    | '/gallery'
+    | '/home'
+    | '/upload'
+    | '/folders/$folderId'
   id:
     | '__root__'
     | '/'
@@ -95,6 +130,8 @@ export interface FileRouteTypes {
     | '/_authenticated/folders/'
     | '/_authenticated/gallery/'
     | '/_authenticated/home/'
+    | '/_authenticated/upload/'
+    | '/_authenticated/folders/$folderId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -155,6 +192,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/upload/': {
+      id: '/_authenticated/upload/'
+      path: '/upload'
+      fullPath: '/upload/'
+      preLoaderRoute: typeof AuthenticatedUploadIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/folders/$folderId/': {
+      id: '/_authenticated/folders/$folderId/'
+      path: '/folders/$folderId'
+      fullPath: '/folders/$folderId/'
+      preLoaderRoute: typeof AuthenticatedFoldersFolderIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -162,12 +213,17 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFoldersIndexRoute: typeof AuthenticatedFoldersIndexRoute
   AuthenticatedGalleryIndexRoute: typeof AuthenticatedGalleryIndexRoute
   AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
+  AuthenticatedUploadIndexRoute: typeof AuthenticatedUploadIndexRoute
+  AuthenticatedFoldersFolderIdIndexRoute: typeof AuthenticatedFoldersFolderIdIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFoldersIndexRoute: AuthenticatedFoldersIndexRoute,
   AuthenticatedGalleryIndexRoute: AuthenticatedGalleryIndexRoute,
   AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
+  AuthenticatedUploadIndexRoute: AuthenticatedUploadIndexRoute,
+  AuthenticatedFoldersFolderIdIndexRoute:
+    AuthenticatedFoldersFolderIdIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

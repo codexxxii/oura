@@ -1,3 +1,4 @@
+import PageHeader from "@/components/page-header";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/gallery/")({
@@ -5,5 +6,9 @@ export const Route = createFileRoute("/_authenticated/gallery/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/gallery/"!</div>;
+  return (
+    <div className="py-10">
+      <PageHeader title="Gallery" />
+    </div>
+  );
 }

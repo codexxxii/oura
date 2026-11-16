@@ -9,7 +9,6 @@ export const upsertFromClerk = internalMutation({
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
-    createdAt: v.number(),
   },
 
   handler: async (ctx, args) => {
@@ -23,7 +22,6 @@ export const upsertFromClerk = internalMutation({
     }
   },
 });
-
 // Delete a user
 export const deleteFromClerk = internalMutation({
   args: {

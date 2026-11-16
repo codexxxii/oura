@@ -1,3 +1,6 @@
+import CraeteFolderButton from "@/components/create-folder-button";
+import Folders from "@/components/folders";
+import PageHeader from "@/components/page-header";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/folders/")({
@@ -5,5 +8,10 @@ export const Route = createFileRoute("/_authenticated/folders/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/folders/"!</div>;
+  return (
+    <div className="py-10">
+      <PageHeader title="Folders" button={<CraeteFolderButton />} />
+      <Folders />
+    </div>
+  );
 }

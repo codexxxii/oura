@@ -1,3 +1,4 @@
+import MaxWidthWrapper from "@/components/max-width-wrapper";
 import Nav from "@/components/nav";
 import Sidebar from "@/components/sidebar";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
@@ -21,9 +22,11 @@ function RouteComponent() {
   return (
     <div className="w-full min-h-screen flex">
       <Sidebar />
-      <div>
+      <div className="grow">
         <Nav />
-        <Outlet />
+        <MaxWidthWrapper>
+          <Outlet />
+        </MaxWidthWrapper>
       </div>
     </div>
   );

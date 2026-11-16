@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as SignInIndexRouteImport } from './routes/sign-in/index'
 import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
+import { Route as AuthenticatedFoldersIndexRouteImport } from './routes/_authenticated/folders/index'
+import { Route as AuthenticatedGalleryIndexRouteImport } from './routes/_authenticated/gallery/index'
 import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -34,6 +36,18 @@ const SignUpIndexRoute = SignUpIndexRouteImport.update({
   path: '/sign-up/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFoldersIndexRoute =
+  AuthenticatedFoldersIndexRouteImport.update({
+    id: '/folders/',
+    path: '/folders/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedGalleryIndexRoute =
+  AuthenticatedGalleryIndexRouteImport.update({
+    id: '/gallery/',
+    path: '/gallery/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
   id: '/home/',
   path: '/home/',
@@ -44,12 +58,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in/': typeof SignInIndexRoute
   '/sign-up/': typeof SignUpIndexRoute
+  '/folders/': typeof AuthenticatedFoldersIndexRoute
+  '/gallery/': typeof AuthenticatedGalleryIndexRoute
   '/home/': typeof AuthenticatedHomeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInIndexRoute
   '/sign-up': typeof SignUpIndexRoute
+  '/folders': typeof AuthenticatedFoldersIndexRoute
+  '/gallery': typeof AuthenticatedGalleryIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
 }
 export interface FileRoutesById {
@@ -58,19 +76,24 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/sign-in/': typeof SignInIndexRoute
   '/sign-up/': typeof SignUpIndexRoute
+  '/_authenticated/folders/': typeof AuthenticatedFoldersIndexRoute
+  '/_authenticated/gallery/': typeof AuthenticatedGalleryIndexRoute
   '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in/' | '/sign-up/' | '/home/'
+  fullPaths:
+    '/' | '/sign-in/' | '/sign-up/' | '/folders/' | '/gallery/' | '/home/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/home'
+  to: '/' | '/sign-in' | '/sign-up' | '/folders' | '/gallery' | '/home'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/sign-in/'
     | '/sign-up/'
+    | '/_authenticated/folders/'
+    | '/_authenticated/gallery/'
     | '/_authenticated/home/'
   fileRoutesById: FileRoutesById
 }
@@ -111,6 +134,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/folders/': {
+      id: '/_authenticated/folders/'
+      path: '/folders'
+      fullPath: '/folders/'
+      preLoaderRoute: typeof AuthenticatedFoldersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gallery/': {
+      id: '/_authenticated/gallery/'
+      path: '/gallery'
+      fullPath: '/gallery/'
+      preLoaderRoute: typeof AuthenticatedGalleryIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/home/': {
       id: '/_authenticated/home/'
       path: '/home'
@@ -122,10 +159,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedFoldersIndexRoute: typeof AuthenticatedFoldersIndexRoute
+  AuthenticatedGalleryIndexRoute: typeof AuthenticatedGalleryIndexRoute
   AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedFoldersIndexRoute: AuthenticatedFoldersIndexRoute,
+  AuthenticatedGalleryIndexRoute: AuthenticatedGalleryIndexRoute,
   AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
 }
 
